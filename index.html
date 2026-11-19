@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Etsy Fee &amp; Profit Calculator (2026 rates, 32 countries) — Sheetwright</title>
+<meta name="description" content="Free Etsy fee calculator with 2026 rates for all 32 seller countries. See every fee, the true fee rate, your profit and margin per order — plus the price you need to hit a target margin.">
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="Etsy Fee &amp; Profit Calculator — 2026 rates">
+<meta property="og:description" content="Every Etsy fee on one screen: listing, transaction, payment processing, regulatory, Offsite Ads and VAT on fees. 32 seller countries.">
+<meta property="og:type" content="website">
+<style>
+:root{
+  color-scheme: light;
+  --navy:#0E1B2C; --ink:#1B2634; --body:#2B3848; --muted:#6C7A8C;
+  --line:#E2E8F0; --bg:#F6F8FB; --card:#FFFFFF; --soft:#F6F8FB;
+  --accent:#0B7A63; --accent-soft:#E7F2EF; --amber:#A9741A; --amber-soft:#FDF5E4;
+  --red:#AF3A2C; --red-soft:#FBEBE8;
+  --input:#FFFCF2; --input-line:#D8B14A; --shadow:0 1px 2px rgba(16,30,54,.06),0 8px 24px rgba(16,30,54,.06);
+  --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+html[data-theme="dark"]{
+  color-scheme: dark;
+  --navy:#EAF0F6; --ink:#DCE5EE; --body:#B9C6D4; --muted:#8496A8;
+  --line:#22303F; --bg:#0B1420; --card:#111C2A; --soft:#0F1926;
+  --accent:#4CC0A3; --accent-soft:#14302B; --amber:#E0A94A; --amber-soft:#2A2314;
+  --red:#E8796A; --red-soft:#2C1917;
+  --input:#1A2634; --input-line:#5C4A1E; --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 32px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--body);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,"Helvetica Neue",Arial,"Liberation Sans","DejaVu Sans",sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+header{background:var(--navy);color:#fff;position:sticky;top:0;z-index:20}
+html[data-theme="dark"] header{background:#0A1119;border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.14em;font-size:12px;color:#fff}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:#E8A33D}
+.brand small{font-weight:400;letter-spacing:.02em;color:#93A7BB;text-transform:none;font-size:13px}
+.theme{font-family:inherit;background:transparent;border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:999px;
+  padding:7px 14px;font-size:12.5px;cursor:pointer;letter-spacing:.02em}
+.theme:hover{border-color:rgba(255,255,255,.5)}
+.hero{padding:52px 0 18px}
+.kicker{color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin:0 0 10px}
+h1{color:var(--ink);font-size:clamp(30px,5vw,46px);line-height:1.08;letter-spacing:-.02em;margin:0 0 14px;font-weight:800}
+.lede{font-size:17.5px;color:var(--muted);max-width:640px;margin:0}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start;margin:30px 0 10px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.card .pad{padding:22px 22px 8px}
+.card h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 16px;font-weight:700}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px;font-weight:600}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input[type=number],select{font-family:inherit;width:100%;height:44px;padding:0 12px;border:1px solid var(--line);border-radius:10px;
+  background:var(--input);color:var(--ink);font-size:15px;font-variant-numeric:tabular-nums;
+  border-bottom:2px solid var(--input-line);outline:none;appearance:none}
+select{cursor:pointer;padding-right:34px;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236C7A8C' d='M1.4.6 6 5.2 10.6.6 12 2l-6 6-6-6z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;background-size:12px}
+input[type=number]:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.hint{font-size:11.5px;color:var(--muted);margin-top:4px}
+.switch{display:flex;align-items:center;gap:10px;padding:10px 0}
+.switch input{width:18px;height:18px;accent-color:var(--accent)}
+.switch span{font-size:14px;color:var(--body)}
+.sep{height:1px;background:var(--line);margin:16px 0}
+.result{padding:24px}
+.your{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0}
+.big{font-size:clamp(38px,7vw,52px);font-weight:800;color:var(--ink);letter-spacing:-.03em;
+  line-height:1.05;margin:6px 0 2px;font-variant-numeric:tabular-nums}
+.sub{color:var(--muted);font-size:14px;margin:0 0 16px}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 11px;font-size:12.5px;font-weight:700}
+.pill.ok{background:var(--accent-soft);color:var(--accent)}
+.pill.warn{background:var(--amber-soft);color:var(--amber)}
+.pill.bad{background:var(--red-soft);color:var(--red)}
+.bar{display:flex;height:10px;border-radius:6px;overflow:hidden;margin:18px 0 8px;background:var(--soft)}
+.bar i{display:block;height:100%}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-bottom:14px}
+.legend b{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}
+table.lines{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+table.lines td{padding:7px 0;border-bottom:1px solid var(--line);color:var(--body)}
+table.lines td:last-child{text-align:right;color:var(--ink);font-weight:600}
+table.lines tr.grp td{color:var(--muted);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  font-weight:700;border-bottom:none;padding-top:14px;text-align:left}
+table.lines tr.sum td{border-bottom:none;padding-top:10px;font-weight:800;color:var(--ink)}
+table.lines tr.total td{border-top:2px solid var(--navy);border-bottom:none;padding-top:11px;font-weight:800;font-size:15px}
+.neg{color:var(--red)!important}
+.rev{margin-top:18px;padding:16px;border-radius:12px;background:var(--soft);border:1px dashed var(--line)}
+.rev h3{margin:0 0 6px;font-size:13px;color:var(--ink)}
+.rev p{margin:0;font-size:13px;color:var(--muted)}
+.rev strong{color:var(--accent);font-size:20px;font-variant-numeric:tabular-nums}
+.cta{margin:34px 0 10px;border-radius:18px;padding:26px;background:linear-gradient(135deg,#0E1B2C,#123048);
+  color:#fff;display:flex;gap:22px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.cta h3{margin:0 0 6px;font-size:20px;letter-spacing:-.01em}
+.cta p{margin:0;color:#B7C7D6;font-size:14px;max-width:560px}
+.cta a{font-family:inherit;background:#E8A33D;color:#241A06;text-decoration:none;font-weight:800;padding:13px 22px;border-radius:10px;
+  font-size:14.5px;white-space:nowrap}
+.cta a:hover{filter:brightness(1.06)}
+.explain{margin:40px 0 0}
+.explain h2{font-size:22px;color:var(--ink);letter-spacing:-.01em;margin:0 0 10px}
+.explain p{color:var(--body);max-width:760px}
+table.rates{width:100%;border-collapse:collapse;font-size:13.5px;margin:16px 0 8px;background:var(--card);
+  border:1px solid var(--line);border-radius:12px;overflow:hidden}
+table.rates th{background:var(--navy);color:#fff;text-align:left;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;padding:10px 12px;font-weight:700}
+table.rates td{padding:9px 12px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+table.rates td:first-child{font-weight:700;color:var(--ink)}
+@media(max-width:620px){
+  table.rates thead,table.rates tbody{display:block}
+  table.rates{display:block;border:none;background:transparent}
+  table.rates td{display:block;border:none;padding:1px 0}
+  table.rates tr{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:11px 14px;margin-bottom:8px}
+  table.rates td:first-child{font-size:14px;margin-bottom:2px}
+  table.rates td:nth-child(2){color:var(--muted);font-size:12.5px}
+  table.rates td:nth-child(3){color:var(--accent);font-weight:700;font-size:13px;margin-top:4px}
+  .cta{padding:20px}
+  .cta a{width:100%;text-align:center}
+  .hero{padding:34px 0 10px}
+}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:10px}
+details summary{cursor:pointer;font-weight:700;color:var(--ink);font-size:15px}
+details p{margin:10px 0 2px;color:var(--body);font-size:14px}
+footer{margin:48px 0 0;padding:26px 0 40px;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px}
+footer a{color:var(--muted)}
+.tiny{font-size:12px;color:var(--muted)}
+.copy{font-family:inherit;background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:7px 12px;
+  font-size:12.5px;cursor:pointer;margin-top:14px}
+.copy:hover{border-color:var(--accent);color:var(--accent)}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span> SHEETWRIGHT <small>Etsy profit tools</small></div>
+    <button class="theme" id="themeBtn" type="button">Dark</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <p class="kicker">2026 rates · 32 seller countries</p>
+    <h1>What does Etsy actually pay you?</h1>
+    <p class="lede">Every fee on one screen: listing, 6.5% transaction, payment processing, the
+      regulatory fee, Offsite Ads and the VAT Etsy adds to its own fees. Then the number that
+      matters — what lands in your account.</p>
+  </section>
+
+  <div class="grid">
+    <section class="card">
+      <div class="pad">
+        <h2>Your order</h2>
+        <div class="field">
+          <label for="country">Shop country (where your shop is registered)</label>
+          <select id="country"></select>
+          <div class="hint" id="countryHint"></div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="item">Item price</label>
+            <input type="number" id="item" value="20" min="0" step="0.01" inputmode="decimal">
+          </div>
+          <div class="field">
+            <label for="shipping">Shipping charged</label>
+            <input type="number" id="shipping" value="5" min="0" step="0.01" inputmode="decimal">
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="gift">Gift wrap charged</label>
+            <input type="number" id="gift" value="0" min="0" step="0.01" inputmode="decimal">
+          </div>
+          <div class="field">
+            <label for="tax">Sales tax Etsy collected</label>
+            <input type="number" id="tax" value="0" min="0" step="0.01" inputmode="decimal">
+          </div>
+        </div>
+        <div class="sep"></div>
+        <h2>Your costs</h2>
+        <div class="row">
+          <div class="field">
+            <label for="cogs">Materials / COGS per unit</label>
+            <input type="number" id="cogs" value="4.2" min="0" step="0.01" inputmode="decimal">
+          </div>
+          <div class="field">
+            <label for="packaging">Packaging per unit</label>
+            <input type="number" id="packaging" value="0.9" min="0" step="0.01" inputmode="decimal">
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="label">Shipping label (per order)</label>
+            <input type="number" id="label" value="4.5" min="0" step="0.01" inputmode="decimal">
+          </div>
+          <div class="field">
+            <label for="qty">Quantity</label>
+            <input type="number" id="qty" value="1" min="1" step="1" inputmode="numeric">
+          </div>
+        </div>
+        <div class="sep"></div>
+        <h2>This order</h2>
+        <div class="switch">
+          <input type="checkbox" id="intl">
+          <span>International buyer (only changes AU, CA and NZ rates)</span>
+        </div>
+        <div class="switch">
+          <input type="checkbox" id="ad">
+          <span>Came from an Offsite Ad</span>
+        </div>
+        <div class="field">
+          <label for="adRate">Offsite Ads rate</label>
+          <select id="adRate">
+            <option value="0.15">15% — shops under $10,000/year</option>
+            <option value="0.12">12% — shops at $10,000+/year</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="target">Target net margin</label>
+          <input type="number" id="target" value="40" min="0" max="95" step="1" inputmode="numeric">
+        </div>
+        <div class="switch">
+          <input type="checkbox" id="vatReclaim">
+          <span>VAT on Etsy's fees is reclaimable (VAT-registered)</span>
+        </div>
+        <div class="hint" id="vatHint"></div>
+      </div>
+    </section>
+
+    <section class="card result">
+      <p class="your">You keep</p>
+      <div class="big" id="keep">$22.17</div>
+      <p class="sub" id="keepSub">on a $25.00 order · 88.7% margin</p>
+      <span class="pill ok" id="verdict">Healthy</span>
+
+      <div class="bar" id="bar">
+        <i id="bFees" style="background:#C9D6E2"></i>
+        <i id="bCosts" style="background:#E8A33D"></i>
+        <i id="bProfit" style="background:#0B7A63;flex:1"></i>
+      </div>
+      <div class="legend">
+        <span><b style="background:#C9D6E2"></b>Etsy fees <span id="lgFees"></span></span>
+        <span><b style="background:#E8A33D"></b>Your costs <span id="lgCosts"></span></span>
+        <span><b style="background:#0B7A63"></b>Profit <span id="lgProfit"></span></span>
+      </div>
+
+      <table class="lines" id="lines"></table>
+
+      <div class="rev">
+        <h3>To hit <span id="tgtLabel">40%</span> margin, charge</h3>
+        <p><strong id="priceForTarget">—</strong> for the item <span id="priceForTargetNote"></span></p>
+      </div>
+
+      <button class="copy" id="copyBtn" type="button">Copy this breakdown</button>
+    </section>
+  </div>
+
+  <section class="cta">
+    <div>
+      <h3>Doing this for every order, every month?</h3>
+      <p>Etsy True Profit OS turns your orders CSV into per-order profit, a monthly dashboard and a
+        quarterly tax reserve — with the same 2026 rates for all 32 countries, inside Excel or
+        Google Sheets. $39, once.</p>
+    </div>
+    <a id="ctaLink" href="https://sheetwrightstudio.gumroad.com/l/etsy-true-profit-os-2026" rel="noopener">Get the spreadsheet →</a>
+  </section>
+
+  <section class="explain">
+    <h2>How Etsy's fees work in 2026</h2>
+    <p>Etsy does not charge one fee. On a normal sale it charges up to five, and only the first two
+      are the same in every country. This calculator uses the rates published on Etsy's own help
+      pages on <strong>2026-11-20</strong>; the full table, with sources, is in the paid workbook's
+      Fee Watch sheet.</p>
+    <table class="rates">
+      <thead><tr><th>Fee</th><th>What it is charged on</th><th>2026 rate</th></tr></thead>
+      <tbody>
+        <tr><td>Listing</td><td>Each listing, and again each time an item sells and relists</td><td>$0.20</td></tr>
+        <tr><td>Transaction</td><td>Item + shipping + gift wrap (not sales tax)</td><td>6.5%</td></tr>
+        <tr><td>Payment processing</td><td>Order total, including the sales tax Etsy collected</td><td>by country — US 3% + $0.25, UK 4% + £0.20, euro zone 4% + €0.30</td></tr>
+        <tr><td>Regulatory operating fee</td><td>Item + shipping + gift wrap</td><td>9 countries only: 0.05% (India) to 1.97% (Hungary)</td></tr>
+        <tr><td>Offsite Ads</td><td>Order total, only when an ad click leads to the sale within 30 days</td><td>15%, or 12% above $10,000/year — capped at $100 per order</td></tr>
+        <tr><td>VAT on Etsy's fees</td><td>Etsy's own fees</td><td>local rate in 30 of 32 countries (20% UK, 27% Hungary)</td></tr>
+        <tr><td>Currency conversion</td><td>Sale amount, if your payout account is in another currency</td><td>2.5%</td></tr>
+      </tbody>
+    </table>
+    <p class="tiny">Two lines most sellers miss: payment processing is charged on the sales tax as
+      well as the order, and Etsy adds VAT to its own fees in most countries. Both are included above.</p>
+  </section>
+
+  <section class="explain">
+    <h2>Questions</h2>
+    <details><summary>Why is the fee higher than 6.5% + 3% + $0.25?</summary>
+      <p>Because the transaction fee and the processing fee are charged on different bases, and both
+      are percentages of a total that includes shipping. On a $20 item with $5 shipping you pay
+      $0.20 listing, $1.63 transaction and $1.00 processing — $2.83, or 11.3% of what the buyer paid.</p></details>
+    <details><summary>My shop is outside the US — does this tool cover it?</summary>
+      <p>Yes, all 32 Etsy seller countries. Pick your country and the payment processing rate, the
+      regulatory fee and the VAT on fees all switch. Australia, Canada and New Zealand also have a
+      higher rate on international orders, which the calculator applies when you mark the order as
+      international.</p></details>
+    <details><summary>How do I know the rates are current?</summary>
+      <p>They were read from Etsy's payment processing, regulatory fee, Offsite Ads and currency
+      conversion help pages on 20 November 2026, including the 22 June 2026 regulatory fee revisions.
+      Etsy can change them at any time — your payment account statement is always the final word.</p></details>
+    <details><summary>Does the shipping I charge count as revenue?</summary>
+      <p>Yes, and it is feeable. Etsy charges its transaction fee on shipping, so "free shipping"
+      you absorb is a real cost on top of the label.</p></details>
+    <details><summary>What about refunds?</summary>
+      <p>Not modelled here. Etsy credits the processing fee proportionally when you refund, so a
+      refund is not simply negative revenue.</p></details>
+  </section>
+
+  <footer>
+    <p>Built by Sheetwright · <a href="https://sheetwrightstudio.gumroad.com/l/etsy-true-profit-os-2026" rel="noopener">Etsy True Profit OS</a>
+      · rates verified 20 November 2026</p>
+    <p class="tiny">Not affiliated with, endorsed by, or sponsored by Etsy, Inc. "Etsy" is a trademark
+      of Etsy, Inc. This calculator is an estimate, not accounting or tax advice.</p>
+  </footer>
+</main>
+
+<script>
+const RATES = {"verified":"2026-11-20","listingFeeUsd":0.2,"transaction":0.065,"conversion":0.025,"adsCapUsd":100.0,"fx":{"USD":1.0,"GBP":1.27,"EUR":1.08,"CAD":0.72,"AUD":0.65,"NZD":0.59,"CHF":1.13,"SEK":0.095,"NOK":0.092,"DKK":0.145,"PLN":0.25,"CZK":0.043,"HUF":0.0027,"RON":0.22,"BGN":0.552,"INR":0.0115,"JPY":0.0066,"MXN":0.055,"SGD":0.74,"ZAR":0.055,"TRY":0.028,"BRL":0.185},"countries":[{"name":"Australia","code":"AU","ccy":"AUD","pay":0.03,"fixed":0.25,"fixedCcy":"AUD","intl":0.04,"reg":0.0,"vat":10.0},{"name":"Austria","code":"AT","ccy":"EUR","pay":0.04,"fixed":0.3,"fixedCcy":"EUR","intl":null,"reg":0.0,"vat":20.0},{"name":"Belgium","code":"BE","ccy":"EUR","pay":0.04,"fixed":0.3,"fixedCcy":"EUR","intl":null,"reg":0.0,"vat":21.0},{"name":"Brazil","code":"BR","ccy":"BRL","pay":0.065,"fixed":0.3,"fixedCcy":"USD","intl":null,"reg":0.0,"vat":0.0},{"name":"Bulgaria","code":"BG","ccy":"BGN","pay":0.04,"fixed":0.3,"fixedCcy":"EUR","intl":null,"reg":0.0,"vat":20.0},{"name":"Canada","code":"CA","ccy":"CAD","pay":0.03,"fixed":0.25,"fixedCcy":"CAD","intl":0.04,"reg":0.5,"vat":5.0},{"name":"Czech Republic","code":"CZ","ccy":"CZK","pay":0.04,"fixed":0.3,"fixedCcy":"EUR","intl":null,"reg":0.0,"vat":21.0},{"name":"Denmark","code":"DK","ccy":"DKK","pay":0.04,"fixed":2.5,"fixedCcy":"DKK","intl":null,"reg":0.0,"vat":25.0},{"name":"Finland","code":"FI","ccy":"EUR","pay":0.04,"fixed":0.3,"fixedCcy":"EUR","intl":null,"reg":0.0,"vat":25.5},{"name":"France","code":"FR","ccy":"EUR","pay":0.04,"fixed":0.3,"fixedCcy":"EUR","intl":null,"reg":1.14,"vat":20.0},{"name":"Germany","code":"DE","ccy":"EUR","pay":0.04,"fixed":0.3,"fixedCcy":"EUR","intl":null,"reg":0.0,"vat":19.0},{"name":"Greece","code":"GR","ccy":"EUR","pay":0.04,"fixed":0.3,"fixedCcy":"EUR","intl":null,"reg":0.0,"vat":24.0},{"name":"Hungary","code":"HU","ccy":"HUF","pay":0.04,"fixed":0.3,"fixedCcy":"EUR","intl":null,"reg":1.97,"vat":27.0},{"name":"India","code":"IN","ccy":"INR","pay":0.05,"fixed":25.0,"fixedCcy":"INR","intl":null,"reg":0.05,"vat":18.0},{"name":"Ireland","code":"IE","ccy":"EUR","pay":0.04,"fixed":0.3,"fixedCcy":"EUR","intl":null,"reg":0.0,"vat":23.0},{"name":"Italy","code":"IT","ccy":"EUR","pay":0.04,"fixed":0.3,"fixedCcy":"EUR","intl":null,"reg":0.8,"vat":22.0},{"name":"Japan","code":"JP","ccy":"JPY","pay":0.06,"fixed":0.3,"fixedCcy":"USD","intl":null,"reg":0.0,"vat":10.0},{"name":"Mexico","code":"MX","ccy":"MXN","pay":0.045,"fixed":8.0,"fixedCcy":"MXN","intl":null,"reg":0.0,"vat":16.0},{"name":"Netherlands","code":"NL","ccy":"EUR","pay":0.04,"fixed":0.3,"fixedCcy":"EUR","intl":null,"reg":0.0,"vat":21.0},{"name":"New Zealand","code":"NZ","ccy":"NZD","pay":0.03,"fixed":0.3,"fixedCcy":"NZD","intl":0.04,"reg":0.0,"vat":15.0},{"name":"Norway","code":"NO","ccy":"NOK","pay":0.04,"fixed":2.5,"fixedCcy":"NOK","intl":null,"reg":0.0,"vat":25.0},{"name":"Poland","code":"PL","ccy":"PLN","pay":0.04,"fixed":0.3,"fixedCcy":"EUR","intl":null,"reg":0.0,"vat":23.0},{"name":"Portugal","code":"PT","ccy":"EUR","pay":0.04,"fixed":0.3,"fixedCcy":"EUR","intl":null,"reg":0.0,"vat":23.0},{"name":"Romania","code":"RO","ccy":"RON","pay":0.04,"fixed":0.3,"fixedCcy":"EUR","intl":null,"reg":0.0,"vat":21.0},{"name":"Singapore","code":"SG","ccy":"SGD","pay":0.044,"fixed":0.35,"fixedCcy":"SGD","intl":null,"reg":0.0,"vat":9.0},{"name":"South Africa","code":"ZA","ccy":"ZAR","pay":0.045,"fixed":8.0,"fixedCcy":"ZAR","intl":null,"reg":0.0,"vat":15.0},{"name":"Spain","code":"ES","ccy":"EUR","pay":0.04,"fixed":0.3,"fixedCcy":"EUR","intl":null,"reg":0.88,"vat":21.0},{"name":"Sweden","code":"SE","ccy":"SEK","pay":0.04,"fixed":3.0,"fixedCcy":"SEK","intl":null,"reg":0.0,"vat":25.0},{"name":"Switzerland","code":"CH","ccy":"CHF","pay":0.04,"fixed":0.5,"fixedCcy":"CHF","intl":null,"reg":0.0,"vat":8.1},{"name":"Türkiye","code":"TR","ccy":"TRY","pay":0.065,"fixed":14.0,"fixedCcy":"TRY","intl":null,"reg":1.67,"vat":20.0},{"name":"United Kingdom","code":"GB","ccy":"GBP","pay":0.04,"fixed":0.2,"fixedCcy":"GBP","intl":null,"reg":0.48,"vat":20.0},{"name":"United States","code":"US","ccy":"USD","pay":0.03,"fixed":0.25,"fixedCcy":"USD","intl":null,"reg":0.0,"vat":0.0}]};
+const VERIFIED_LONG = '20 November 2026';
+
+const $ = id => document.getElementById(id);
+const nf = new Intl.NumberFormat('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+
+const countries = RATES.countries;
+const byName = Object.fromEntries(countries.map(c => [c.name, c]));
+let ccy = 'USD';
+
+function fmt(v, opts) {
+  if (!isFinite(v)) return '—';
+  try {
+    return new Intl.NumberFormat('en-US', {style:'currency', currency:ccy,
+      minimumFractionDigits:2, maximumFractionDigits:2}).format(v);
+  } catch (e) { return nf.format(v); }
+}
+function num(id) { const v = parseFloat($(id).value); return isFinite(v) ? v : 0; }
+
+function toShop(amount, from, to) {
+  return amount * (RATES.fx[from] || 1) / (RATES.fx[to] || 1);
+}
+
+function compute() {
+  const c = byName[$('country').value] || countries[0];
+  ccy = c.ccy;
+  const item = num('item'), shipping = num('shipping'), gift = num('gift'), tax = num('tax'),
+        cogs = num('cogs'), packaging = num('packaging'), label = num('label'),
+        qty = Math.max(1, num('qty') || 1);
+  const international = $('intl') ? $('intl').checked : false;
+  const adOn = $('ad').checked;
+  const adRate = parseFloat($('adRate').value);
+  const vatReclaim = $('vatReclaim').checked;
+  const target = Math.min(95, Math.max(0, num('target'))) / 100;
+
+  const gross = item + shipping + gift;
+  const payBase = gross + tax;
+  const payRate = (international && c.intl) ? c.intl : c.pay;
+  const fixedShop = toShop(c.fixed, c.fixedCcy, c.ccy);
+
+  const listing = toShop(RATES.listingFeeUsd, 'USD', c.ccy);
+  const transaction = Math.round(RATES.transaction * gross * 100) / 100;
+  const payment = Math.round((payRate * payBase + fixedShop) * 100) / 100;
+  const regulatory = Math.round(c.reg / 100 * gross * 100) / 100;
+  const cap = toShop(RATES.adsCapUsd, 'USD', c.ccy);
+  const ads = adOn ? Math.min(Math.round(adRate * gross * 100) / 100, cap) : 0;
+  const feeBase = listing + transaction + payment + regulatory + ads;
+  const vat = vatReclaim ? 0 : Math.round(c.vat / 100 * feeBase * 100) / 100;
+  const fees = Math.round((feeBase + vat) * 100) / 100;
+
+  const cost = Math.round((qty * (cogs + packaging) + label) * 100) / 100;
+  const profit = Math.round((gross - fees - cost) * 100) / 100;
+  const margin = gross > 0 ? profit / gross : 0;
+  const feeRate = gross > 0 ? fees / gross : 0;
+
+  render({c, item, shipping, gift, tax, gross, payBase, listing, transaction, payment, regulatory,
+          ads, vat, fees, cost, profit, margin, feeRate, target, adOn, adRate, vatReclaim,
+          international, payRate, fixedShop, qty, cogs, packaging, label});
+}
+
+function render(d) {
+  $('keep').textContent = fmt(d.profit);
+  $('keep').className = 'big' + (d.profit < 0 ? ' neg' : '');
+  $('keepSub').textContent = `on a ${fmt(d.gross)} order · ${(d.margin*100).toFixed(1)}% margin · Etsy keeps ${(d.feeRate*100).toFixed(1)}%`;
+
+  const v = $('verdict');
+  if (d.profit < 0) { v.className = 'pill bad'; v.textContent = 'Loses money'; }
+  else if (d.margin < d.target) { v.className = 'pill warn'; v.textContent = `Below your ${(d.target*100).toFixed(0)}% target`; }
+  else { v.className = 'pill ok'; v.textContent = `Above your ${(d.target*100).toFixed(0)}% target`; }
+
+  const base = Math.max(d.gross, 0.0001);
+  $('bFees').style.width = Math.max(0, d.fees) / base * 100 + '%';
+  $('bCosts').style.width = Math.max(0, d.cost) / base * 100 + '%';
+  $('bProfit').style.width = Math.max(0, d.profit) / base * 100 + '%';
+  $('lgFees').textContent = fmt(d.fees);
+  $('lgCosts').textContent = fmt(d.cost);
+  $('lgProfit').textContent = fmt(d.profit);
+
+  const rows = [];
+  const add = (label, val) => rows.push(['item', label, val]);
+  rows.push(['grp', 'Money in', '']);
+  add('Item price', fmt(d.item));
+  if (d.shipping) add('Shipping charged', fmt(d.shipping));
+  if (d.gift) add('Gift wrap charged', fmt(d.gift));
+  rows.push(['sum', 'Revenue (excl. sales tax)', fmt(d.gross)]);
+  if (d.tax) rows.push(['note', 'Sales tax collected — not yours', fmt(d.tax)]);
+  rows.push(['grp', 'Etsy fees', '']);
+  add('Listing fee', '−' + fmt(d.listing));
+  add('Transaction fee 6.5%', '−' + fmt(d.transaction));
+  add(`Payment processing ${(d.payRate*100).toFixed(1)}% + ${fmt(d.fixedShop)}`, '−' + fmt(d.payment));
+  if (d.regulatory) add(`Regulatory fee ${d.c.reg.toFixed(2)}%`, '−' + fmt(d.regulatory));
+  if (d.ads) add(`Offsite Ads ${(d.adRate*100).toFixed(0)}%`, '−' + fmt(d.ads));
+  if (d.vat) add(`VAT on Etsy's fees ${d.c.vat}%`, '−' + fmt(d.vat));
+  rows.push(['sum', `Total Etsy fees · ${(d.feeRate*100).toFixed(1)}% of revenue`, '−' + fmt(d.fees)]);
+  rows.push(['grp', 'Your costs', '']);
+  add(`Materials × ${d.qty}`, '−' + fmt(d.qty * d.cogs));
+  if (d.packaging) add(`Packaging × ${d.qty}`, '−' + fmt(d.qty * d.packaging));
+  if (d.label) add('Shipping label', '−' + fmt(d.label));
+  rows.push(['total', 'What you keep', fmt(d.profit)]);
+
+  $('lines').innerHTML = rows.map(([kind, label, val]) => {
+    if (kind === 'grp') return `<tr class="grp"><td colspan="2">${label}</td></tr>`;
+    if (kind === 'note') return `<tr><td style="color:var(--muted);font-size:12.5px">${label}</td><td style="color:var(--muted)">${val}</td></tr>`;
+    const cls = kind === 'sum' || kind === 'total' ? kind : '';
+    return `<tr class="${cls}"><td>${label}</td><td>${val}</td></tr>`;
+  }).join('');
+
+  // reverse: price for a target margin
+  const pctFees = RATES.transaction + d.payRate + d.c.reg / 100 + (d.adOn ? d.adRate : 0);
+  const fixedFees = toShop(RATES.listingFeeUsd, 'USD', d.c.ccy) + toShop(d.c.fixed, d.c.fixedCcy, d.c.ccy)
+                    + (d.international ? 0 : 0);
+  const vatFactor = d.vatReclaim ? 1 : (1 + d.c.vat / 100);
+  const costAll = d.qty * (d.cogs + d.packaging) + d.label;
+  const denom = 1 - pctFees * vatFactor - d.target;
+  let price = NaN, note = '';
+  if (denom > 0.001 && d.target < 1) {
+    const grossNeeded = (fixedFees * vatFactor + costAll) / denom;
+    price = Math.round((grossNeeded - d.shipping - d.gift) * 100) / 100;
+    note = `(${fmt(d.shipping + d.gift)} shipping ${d.gift ? 'and gift wrap ' : ''}included in that order total)`;
+  } else {
+    note = '— this target is not reachable at any price once fees and costs are counted.';
+  }
+  $('tgtLabel').textContent = (d.target * 100).toFixed(0) + '%';
+  $('priceForTarget').textContent = isFinite(price) && price > 0 ? fmt(price) : '—';
+  $('priceForTargetNote').textContent = note;
+
+  $('countryHint').textContent =
+    `${d.c.name} · ${d.c.ccy} · payment ${(d.payRate*100).toFixed(1)}% + ${fmt(d.fixedShop)}`
+    + (d.c.reg ? ` · regulatory ${d.c.reg}%` : '')
+    + (d.c.vat ? ` · VAT on fees ${d.c.vat}%` : ' · no VAT on fees');
+  $('vatHint').textContent = d.c.vat
+    ? `Etsy adds ${d.c.vat}% VAT to its own fees in ${d.c.name}. Tick the box only if you can reclaim it.`
+    : `${d.c.name} has no VAT on Etsy's fees.`;
+
+  window.__last = d;
+}
+
+/* init */
+const sel = $('country');
+countries.forEach(c => {
+  const o = document.createElement('option');
+  o.value = c.name; o.textContent = `${c.name} (${c.ccy})`;
+  sel.appendChild(o);
+});
+sel.value = 'United States';
+
+document.querySelectorAll('input,select').forEach(el => {
+  el.addEventListener('input', compute);
+  el.addEventListener('change', compute);
+});
+
+$('themeBtn').addEventListener('click', () => {
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  $('themeBtn').textContent = next === 'dark' ? 'Light' : 'Dark';
+  try { localStorage.setItem('sw-theme', next); } catch (e) {}
+});
+try {
+  const saved = localStorage.getItem('sw-theme');
+  if (saved === 'dark') { document.documentElement.dataset.theme = 'dark'; $('themeBtn').textContent = 'Light'; }
+} catch (e) {}
+
+$('copyBtn').addEventListener('click', async () => {
+  const d = window.__last;
+  if (!d) return;
+  const lines = [...document.querySelectorAll('#lines tr')].map(tr => {
+    const tds = tr.querySelectorAll('td');
+    return tds.length === 2 ? `${tds[0].textContent}: ${tds[1].textContent}` : tds[0].textContent;
+  });
+  const txt = `Etsy order — ${d.c.name}\n` + lines.join('\n') +
+    `\nMargin: ${(d.margin*100).toFixed(1)}%  ·  Fee rate: ${(d.feeRate*100).toFixed(1)}%` +
+    `\n— calculated with the free Etsy Fee & Profit Calculator (rates ${VERIFIED_LONG})`;
+  try {
+    await navigator.clipboard.writeText(txt);
+    $('copyBtn').textContent = 'Copied';
+    setTimeout(() => $('copyBtn').textContent = 'Copy this breakdown', 1600);
+  } catch (e) { $('copyBtn').textContent = 'Copy failed'; }
+});
+
+compute();
+</script>
+</body>
+</html>
