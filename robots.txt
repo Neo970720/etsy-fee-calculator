@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://neo970720.github.io/etsy-fee-calculator/sitemap.xml
